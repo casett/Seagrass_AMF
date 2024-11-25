@@ -1,0 +1,68 @@
+Name	Species	File	ID	Type	Order	Family	Accession	BioProject	Annotated?	Habitat	Data Citation	AMF Status	AMF Status Citation	Notes
+Alisma plantago-aquatica (GCA_963693085.1)	Alisma plantago-aquatica	GCA_963693085.1_laAliPlan1.1_genomic	laAliPlan1.1	Genome	Alismatales	Alismataceae	GCA_963693085.1	PRJEB70530	No	Freshwater				
+Alisma plantago-aquatica (GCA_963682035.1)	Alisma plantago-aquatica	GCA_963682035.1_laAliPlan1.1_alternate_haplotype_genomic	laAliPlan1.1 alternate haplotype	Genome	Alismatales	Alismataceae	GCA_963682035.1	PRJEB70531	No	Freshwater				
+Amorphophallus konjac (GCA_022559845.1)	Amorphophallus konjac	GCA_022559845.1_ASM2255984v1_genomic	ASM2255984v1	Genome	Alismatales	Araceae	GCA_022559845.1	PRJNA734512	No	Terrestrial				
+Amorphophallus titanum (GCA_024336825.1)	Amorphophallus titanum	GCA_024336825.1_ASM2433682v1_genomic	ASM2433682v1	Genome	Alismatales	Araceae	GCA_024336825.1	PRJNA626018	No	Terrestrial				
+Amphibolis antarctica (GCA_024699675.1)	Amphibolis antarctica	GCA_024699675.1_UWA_Aant_1.0_genomic	UWA_Aant_1.0	Genome	Alismatales	Cymodoceaceae	GCA_024699675.1	PRJNA835502	No	Marine				
+Ananas comosus (GCF_001540865.1)	Ananas comosus	GCF_001540865.1	ASM154086v1	Genome	Bromeliales	Bromeliaceae	GCF_001540865.1	PRJNA305080	Yes	Terrestrial	10.1038/ng.3435	TRUE	10.1080/00103629009368382	
+Anthurium amnicola (GDJX01)	Anthurium amnicola	Anthurium_amnicola_GDJX01.1	GDJX01	Transcriptome	Alismatales	Araceae	GDJX01	PRJNA288827	Yes	Terrestrial				
+Anthurium andraeanum (GBKP01)	Anthurium andraeanum	Anthurium_andraeanum_GBKP01.1	GBKP01	Transcriptome	Alismatales	Araceae	GBKP01	PRJNA241042	No	Terrestrial				
+Aponogeton madagascariensis (GJFM02)	Aponogeton madagascariensis	Aponogeton_madagascariensis_GJFM02.1	GJFM02	Transcriptome	Alismatales	Aponogetonaceae	GJFM02	PRJNA591467	No	Freshwater				"Technically annotated, but used unannotated version"
+Aponogeton madagascariensis (GJFM02)	Aponogeton madagascariensis	Aponogeton_madagascariensis_GJFM02.2	GJFM02	Transcriptome	Alismatales	Aponogetonaceae	GJFM02	PRJNA591467	No	Freshwater				"Technically annotated, but used unannotated version"
+Apostasia shenzhenica (GCA_002786265.1)	Apostasia shenzhenica	GCA_002786265.1	ASM278626v1	Genome	Asparagales	Orchidaceae	GCA_002786265.1	PRJNA310678	Yes	Terrestrial	10.1038/nature23897	FALSE		
+Arabidopsis thaliana (GCF_000001735.4)	Arabidopsis thaliana	GCF_000001735.4	TAIR10.1	Genome	Brassicales	Brassicaceae	GCF_000001735.4	PRJNA10719	Yes	Terrestrial	10.1093/nar/gkr1090	FALSE		
+Brachypodium distachyon (GCF_000005505.3)	Brachypodium distachyon	GCF_000005505.3	Brachypodium_distachyon_v3.0	Genome	Poales	Poaceae	GCF_000005505.3	PRJNA32607	Yes	Terrestrial	10.1038/nature08747	TRUE	10.1007/s00425-012-1677-z	
+Colocasia esculenta (GCA_014218235.1)	Colocasia esculenta	GCA_014218235.1_Taro_JAAS_v1.0_genomic	Taro_JAAS_v1.0	Genome	Alismatales	Araceae	GCA_014218235.1	PRJNA587719	No	Terrestrial				
+Colocasia esculenta (GCA_013364625.1)	Colocasia esculenta	GCA_013364625.1_ASM1336462v1_genomic	ASM1336462v1	Genome	Alismatales	Araceae	GCA_013364625.1	PRJNA567267	No	Terrestrial				
+Colocasia esculenta (GCA_009445465.1)	Colocasia esculenta	GCA_009445465.1	ASM944546v1	Genome	Alismatales	Araceae	GCA_009445465.1	PRJNA328799	Yes	Terrestrial				
+Cryptocoryne crispatula var. balansae (GCA_036172225.1)	Cryptocoryne crispatula var. balansae	GCA_036172225.1_ASM3617222v1_genomic	ASM3617222v1	Genome	Alismatales	Araceae	GCA_036172225.1	PRJNA1049781	No	Freshwater				
+Cymodocea nodosa (HADH01)	Cymodocea nodosa	Cymodocea_nodosa_HADH01.1	HADH01	Transcriptome	Alismatales	Cymodoceaceae	HADH01	PRJEB12372	No	Marine				
+Cymodocea nodosa (GEMM01)	Cymodocea nodosa	Cymodocea_nodosa_GEMM01.1	GEMM01	Transcriptome	Alismatales	Cymodoceaceae	GEMM01	PRJNA275569	No	Marine				
+Cymodocea nodosa (GCA_036874045.1)	Cymodocea nodosa	GCA_036874045.1_Cymodocea_nodosa_var._Cn_1_HAP2_version_1.0_genomic	Cymodocea nodosa var. Cn_1 HAP2 version 1.0	Genome	Alismatales	Cymodoceaceae	GCA_036874045.1	PRJNA1068133	No	Marine				
+Cymodocea nodosa (GCA_036874025.1)	Cymodocea nodosa	GCA_036874025.1_Cymodocea_nodosa_var._Cn_1_HAP1_version_1.0_genomic	Cymodocea nodosa var. Cn_1 HAP1 version 1.0	Genome	Alismatales	Cymodoceaceae	GCA_036874025.1	PRJNA1068132	No	Marine				
+Dendrobium catenatum (GCF_001605985.2)	Dendrobium catenatum	GCF_001605985.2	ASM160598v2	Genome	Asparagales	Orchidaceae	GCF_001605985.2	PRJNA262478	Yes	Terrestrial	10.1038/nature23897	FALSE		
+Elodea nuttallii (GAFQ01)	Elodea nuttallii	Elodea_nuttallii_GAFQ01.1	GAFQ01	Transcriptome	Alismatales	Hydrocharitaceae	GAFQ01	PRJNA188156	No	Freshwater				
+Elodea nuttallii (GBEN01)	Elodea nuttallii	Elodea_nuttallii_GBEN01.1	GBEN01	Transcriptome	Alismatales	Hydrocharitaceae	GBEN01	PRJNA245505	No	Freshwater				
+Hordeum vulgare subsp. vulgare (GCF_904849725.1)	Hordeum vulgare subsp. vulgare	GCF_904849725.1	MorexV3_pseudomolecules_assembly	Genome	Poales	Poaceae	GCF_904849725.1	PRJEB40589	Yes	Terrestrial	10.1038/nature22043 / 10.1038/sdata.2017.44	TRUE	"Champawat, R. S., Pathak, V. N., & Krishna, K. R. (1987). Influence of vesicular-arbuscular mycorrhizal fungi on growth and nutrition uptake in barley(Hordeum vulgare).ÊCurrent science. Bangalore,Ê56(24), 1294-1295."	
+Lemna minuta (GCA_024174645.1)	Lemna minuta	GCA_024174645.1_Salk_lm5633_a03_genomic	Salk_lm5633_a03	Genome	Alismatales	Araceae	GCA_024174645.1	PRJNA725879	No	Freshwater				
+Musa acuminata subsp. malaccensis (GCF_000313855.2)	Musa acuminata subsp. malaccensis	GCF_000313855.2	ASM31385v2	Genome	"Zingiberales	"	Zingiberaceae	GCF_000313855.2	PRJEA82777	Yes	Terrestrial	10.1093/database/bat035	TRUE	10.1007/BF00017688	
+Nelumbo nucifera (GCF_000365185.1)	Nelumbo nucifera	GCF_000365185.1	Chinese Lotus 1.1	Genome	Proteales	Nelumbonaceae	GCF_000365185.1	PRJNA168000	Yes	Freshwater	10.1186/gb-2013-14-5-r41	FALSE		
+Oryza sativa Japonica Group (GCF_001433935.1)	Oryza sativa Japonica Group	GCF_001433935.1	IRGSP-1.0	Genome	Poales	Poaceae	GCF_001433935.1	PRJDB1747	Yes	Terrestrial	10.1093/nar/gkl976	TRUE	10.1016/S2095-3119(15)61241-2	
+Ottelia alismoides (GCA_037367405.1)	Ottelia alismoides	GCA_037367405.1_ASM3736740v1_genomic	ASM3736740v1	Genome	Alismatales	Hydrocharitaceae	GCA_037367405.1	PRJNA1073857	No	Freshwater				
+Phalaenopsis equestris (GCF_001263595.1)	Phalaenopsis equestris	GCF_001263595.1	ASM126359v1	Genome	Asparagales	Orchidaceae	GCF_001263595.1	PRJNA192198	Yes	Terrestrial	10.1038/nature23897	FALSE		
+Phaseolus vulgaris (GCF_000499845.1)	Phaseolus vulgaris	GCF_000499845.1	PhaVulg1_0	Genome	Fabales	Fabaceae	GCF_000499845.1	PRJNA41439	Yes	Terrestrial	10.1038/ng.3008	TRUE	10.1046/j.0028-646x.2001.00187.x	
+Posidonia australis (GCA_024699735.1)	Posidonia australis	GCA_024699735.1_UWA_Paus_1.0_genomic	UWA_Paus_1.0	Genome	Alismatales	Posidoniaceae	GCA_024699735.1	PRJNA835502	No	Marine				
+Posidonia oceanica (GEMD01)	Posidonia oceanica	Posidonia_oceanica_GEMD01.1	GEMD01	Transcriptome	Alismatales	Posidoniaceae	GEMD01	PRJNA315106	No	Marine				
+Posidonia oceanica (GFJT01)	Posidonia oceanica	Posidonia_oceanica_GFJT01.1	GFJT01	Transcriptome	Alismatales	Posidoniaceae	GFJT01	PRJNA375717	No	Marine				
+Posidonia oceanica (GGFN01)	Posidonia oceanica	Posidonia_oceanica_GGFN01.1	GGFN01	Transcriptome	Alismatales	Posidoniaceae	GGFN01	PRJNA428318	No	Marine				
+Posidonia oceanica (GCA_037176725.1)	Posidonia oceanica	GCA_037176725.1_Posidonia_oceanica_var._Po_2_version_1.0_genomic	Posidonia oceanica var. Po_2 version 1.0	Genome	Alismatales	Posidoniaceae	GCA_037176725.1	PRJNA1068136	No	Marine				
+Posidonia oceanica (GCA_037176745.1)	Posidonia oceanica	GCA_037176745.1_Posidonia_oceanica_var._Po_2_altChrs_version_1.0_genomic	Posidonia oceanica var. Po_2 altChrs version 1.0	Genome	Alismatales	Posidoniaceae	GCA_037176745.1	PRJNA1068140	No	Marine				
+Sagittaria trifolia (GJWL01)	Sagittaria trifolia	Sagittaria_trifolia_GJWL01.1	GJWL01	Transcriptome	Alismatales	Alismataceae	GJWL01	PRJNA819828	No	Freshwater				
+Setaria italica (GCF_000263155.2)	Setaria italica	GCF_000263155.2	Setaria_italica_v2.0	Genome	Poales	Poaceae	GCF_000263155.2	PRJNA32913	Yes	Terrestrial	10.1038/nbt.2196	TRUE		
+Sorghum bicolor (GCF_000003195.3)	Sorghum bicolor	GCF_000003195.3	Sorghum_bicolor_NCBIv3	Genome	Poales	Poaceae	GCF_000003195.3	PRJNA13876	Yes	Terrestrial	10.1111/tpj.13781	TRUE	10.1111/j.1469-8137.2004.01095.x	
+Spirodela intermedia (GCA_902729315.2)	Spirodela intermedia	GCA_902729315.2	Spirodela_intermedia_8410_2	Genome	Alismatales	Araceae	GCA_902729315.2	PRJEB35634	Yes	Freshwater				
+Spirodela intermedia (GCA_902703425.1)	Spirodela intermedia	GCA_902703425.1	Spirodela_intermedia_7747_2	Genome	Alismatales	Araceae	GCA_902703425.1	PRJEB35514	Yes	Freshwater				
+Spirodela polyrhiza (GCA_024713555.1)	Spirodela polyrhiza	GCA_024713555.1_Salk_sp9512.v2_genomic	Salk_sp9512.v2	Genome	Alismatales	Araceae	GCA_024713555.1	PRJNA858442	No	Freshwater				
+Spirodela polyrhiza (GCA_001981405.1)	Spirodela polyrhiza	GCA_001981405.1_ASM198140v1_genomic	ASM198140v1	Genome	Alismatales	Araceae	GCA_001981405.1	PRJNA308109	No	Freshwater				
+Spirodela polyrhiza (GCA_013350415.1)	Spirodela polyrhiza	GCA_013350415.1_ASM1335041v1_genomic	ASM1335041v1	Genome	Alismatales	Araceae	GCA_013350415.1	PRJNA611786	No	Freshwater				
+Spirodela polyrhiza (GCA_900492545.1)	Spirodela polyrhiza	GCA_900492545.1_Spirodela_polyrhiza_9509_v3_genomic	Spirodela polyrhiza 9509 v3	Genome	Alismatales	Araceae	GCA_900492545.1	PRJEB27612	No	Freshwater				
+Spirodela polyrhiza (GCA_008360905.1)	Spirodela polyrhiza	GCA_008360905.1_ASM836090v1_genomic	ASM836090v1	Genome	Alismatales	Araceae	GCA_008360905.1	PRJNA520740	No	Freshwater				
+Spirodela polyrhiza (GCA_900536055.1)	Spirodela polyrhiza	GCA_900536055.1_Sp9509v3_genomic	Sp9509v3	Genome	Alismatales	Araceae	GCA_900536055.1	PRJEB28272	No	Freshwater				
+Spirodela polyrhiza (GCA_000504445.1)	Spirodela polyrhiza	GCA_000504445.1_Spirodela_polyrhiza_v01_genomic	Spirodela_polyrhiza_v01	Genome	Alismatales	Araceae	GCA_000504445.1	PRJNA205940	No	Freshwater				
+Thalassia testudinum (GCA_037157565.1)	Thalassia testudinum	GCA_037157565.1_Thalassia_testudinium_var._Tt-101_main_haplotype_version_1.0_genomic	Thalassia testudinium var. Tt-101 main haplotype version 1.0	Genome	Alismatales	Hydrocharitaceae	GCA_037157565.1	PRJNA1068071	No	Marine				
+Thalassia testudinum (GCA_037157585.1)	Thalassia testudinum	GCA_037157585.1_Thalassia_testudinium_var._Tt-101_alt_haplotype_version_1.0_genomic	Thalassia testudinium var. Tt-101 alt haplotype version 1.0	Genome	Alismatales	Hydrocharitaceae	GCA_037157585.1	PRJNA1068072	No	Marine				
+Theobroma cacao (GCF_000208745.1)	Theobroma cacao	GCF_000208745.1	Criollo_cocoa_genome_V2	Genome	Malvales	Malvaceae	GCF_000208745.1	PRJEB14326	Yes	Terrestrial	10.1186/gb-2013-14-6-r53	TRUE	10.1007/BF00335843	
+Triglochin maritima (GCA_963682175.1)	Triglochin maritima	GCA_963682175.1_laTriMari1.1_genomic	laTriMari1.1	Genome	Alismatales	Juncaginaceae	GCA_963682175.1	PRJEB70548	No	Freshwater				
+Triglochin maritima (GCA_963682065.1)	Triglochin maritima	GCA_963682065.1_laTriMari1.1_alternate_haplotype_genomic	laTriMari1.1 alternate haplotype	Genome	Alismatales	Juncaginaceae	GCA_963682065.1	PRJEB70549	No	Freshwater				
+Wolffia australiana (GCA_029677425.1)	Wolffia australiana	GCA_029677425.1_ASM2967742v1_genomic	ASM2967742v1	Genome	Alismatales	Araceae	GCA_029677425.1	PRJNA808652	No	Freshwater				
+Wolffia australiana (GCA_019775775.1)	Wolffia australiana	GCA_019775775.1_wolffia_genome_v1_genomic	wolffia_genome_v1	Genome	Alismatales	Araceae	GCA_019775775.1	PRJNA611905	No	Freshwater				
+Wolffia australiana (GCA_013350325.1)	Wolffia australiana	GCA_013350325.1_ASM1335032v1_genomic	ASM1335032v1	Genome	Alismatales	Araceae	GCA_013350325.1	PRJNA615235	No	Freshwater				
+Wolffia australiana (GCA_013350365.1)	Wolffia australiana	GCA_013350365.1_ASM1335036v1_genomic	ASM1335036v1	Genome	Alismatales	Araceae	GCA_013350365.1	PRJNA615235	No	Freshwater				
+Zantedeschia hybrid cultivar (GCA_030544215.1)	Zantedeschia hybrid cultivar	GCA_030544215.1_ASM3054421v1_genomic	ASM3054421v1	Genome	Alismatales	Araceae	GCA_030544215.1	PRJNA957065	No	Terrestrial				
+Zea mays (GCF_902167145.1)	Zea mays	GCF_902167145.1	Zm-B73-REFERENCE-NAM-5.0	Genome	Poales	Poaceae	GCF_902167145.1	PRJEB32225	Yes	Terrestrial	10.1105/tpc.16.00353	TRUE		
+Zostera capensis (GJZM01)	Zostera capensis	Zostera_capensis_GJZM01.1	GJZM01	Transcriptome	Alismatales	Zosteraceae	GJZM01	PRJNA835347	No	Marine				
+Zostera marina (GCA_001185155.1)	Zostera marina	GCA_001185155.1	Zosma_marina.v.2.1	Genome	Alismatales	Zosteraceae	GCA_001185155.1	PRJNA41721	Yes	Marine	10.1038/nature16548			
+Zostera marina (JGI)	Zostera marina	Zmarina_668_v3.1	v.3.1	Genome	Alismatales	Zosteraceae	JGI	JGI	Yes	Marine				
+Zostera nigricaulis (GCA_009812395.1)	Zostera nigricaulis	GCA_009812395.1_DU_Znig_v1_genomic	DU_Znig_v1	Genome	Alismatales	Zosteraceae	GCA_009812395.1	PRJNA562570	No	Marine				
+Zostera noltei (HACV01)	Zostera noltei	Zostera_noltei_HACV01.1	HACV01	Transcriptome	Alismatales	Zosteraceae	HACV01	PRJNA295550	No	Marine				
+Medicago truncatula (GCA_000219495.2)	Medicago truncatula	Mtruncatula_285_Mt4.0v1	Mtruncatula_Mt4_0v1	Genome	Fabales	Fabaceae	GCA_000219495.2	PRJNA10791	Yes	Terrestrial	10.1038/s41477-018-0286-7	TRUE		

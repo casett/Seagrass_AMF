@@ -1,0 +1,523 @@
+---
+title: "Exploring conservation of AMF genes in aquatic Alismatales"
+author: "Cassie Ettinger"
+#output: pdf_document
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(fig.width = 6, fig.height = 4)
+opts_chunk$set(tidy.opts=list(width.cutoff=60),tidy=TRUE)
+knitr::opts_chunk$set(cache.extra = rand_seed)
+```
+
+
+```{r load, message=FALSE,error=FALSE}
+
+# Load libraries
+library(tidyverse)
+library(vroom)
+library(patchwork)
+library(ggtext)
+
+```
+
+
+## Pre-process reciprical blast output
+```{r prep, message=FALSE, error=FALSE}
+
+# Load in metadata
+metadata <- vroom('../data/sequences_used_info.txt') 
+symbiosis <- vroom('../data/symbiosis_genes.txt')
+
+# Load in blast results
+blast_files <- dir("../data/match_results/", pattern = "*.tsv")  # get file names
+
+# Map file contents to a single dataframe 
+blast_data <- data_frame(File = blast_files) %>%
+  mutate(file_contents = map(File, ~read_tsv(file.path("../data/match_results/",
+                                                           .))))
+blast_data_un <- unnest(blast_data, cols = c(file_contents))  #turns list of files into one file
+
+# Update names so can combine with metadata
+blast_matches <- blast_data_un %>%
+  mutate_at("File", str_replace, ".results.tsv",
+            "")
+
+# Re-order file and clean up
+blast_res_clean <- blast_matches %>% 
+  pivot_wider(id_cols=File, names_from=Gene, values_from=RecipricalMatch) %>%
+  left_join(metadata) %>%
+  relocate(Name) %>% 
+  relocate(Type, .after = Name) %>%
+  relocate(Family, .after = Name) %>%
+  relocate(Order, .after = Name) %>%
+  relocate(Species, .after = Family) %>%
+  relocate(Habitat, .after = Species) %>%
+  relocate(File, .after = last_col())
+
+# Save processed data  
+# write.csv(blast_res_clean, 
+#           '../results/Reciprocal Blast Results.txt', 
+#           quote = FALSE,
+#           row.names=FALSE)
+
+# Update some names to use with markdown 
+```
+
+
+## Figure 1
+```{r plot, message=FALSE, error=FALSE, fig.height=9, fig.width=14}
+
+# Load in results with markdown names
+blast_res <- vroom("../results/Reciprocal Blast Results MD.txt")
+
+# How many samples x habitat 
+blast_res %>% 
+  group_by(Habitat) %>%
+  tally()
+
+# How many samples x predicted AMF status 
+blast_res %>% 
+  group_by(`AMF Status (FungalRoot database)`) %>%
+  tally()
+
+# How many samples x data type 
+blast_res %>% 
+  group_by(Type) %>%
+  tally()
+
+
+
+# Pivot columns representing the genes on cols 8 through 52 in a new column "Gene"
+# this is to make a longer format for the data
+# gene values will be on a new column "Reciprocal Match"
+
+# Plot blast results per gene
+a <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  mutate(Habitat = factor(Habitat, levels=c("Marine", "Freshwater", "Terrestrial"))) %>%  
+  mutate(Name = factor(Name), 
+         Name = fct_reorder(Name, `AMF Status (FungalRoot database)`, .desc = TRUE),
+         Name = fct_reorder(Name, Family, .desc = TRUE)) %>% #reorder names by taxonomic family so close relatives together
+  mutate(`Reciprocal Match` = ifelse(is.na(`Reciprocal Match`), "ND", as.character(`Reciprocal Match`))) %>% #replace NA's with a value ND 
+  mutate(`Reciprocal Match` = factor(`Reciprocal Match`, 
+                                     levels=c("TRUE", "FALSE", "ND"),
+                                     labels=c("TRUE" = "Positive", "FALSE" = "Negative", 'ND' = "Not detected"))) %>% #change order and relabel for plot
+  ggplot(aes(x= Gene, y= Name, fill = `Reciprocal Match`)) +              
+  geom_tile(aes(x=fct_inorder(Gene), y=Name), color = "black") +       # reorders 
+  scale_x_discrete(guide = guide_axis(angle = 90)) +   	    # removed overlapping axis labels
+  scale_fill_manual(values = c("#00466B","#56B4E9", "white")) + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  facet_grid(Habitat ~ ., scales = "free", space = "free", switch = "y") + # splits out habitats
+  xlab("") +
+  ylab("")  +
+  theme(axis.line.x = element_blank(),
+        axis.text.y = element_markdown(),
+        axis.line.y = element_blank(),
+  )
+
+# Plot habitat
+b <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  mutate(Habitat = factor(Habitat, levels=c("Marine", "Freshwater", "Terrestrial"))) %>% # reorder Habitat 
+  mutate(DataType = "Data Type") %>%
+  mutate(Name = factor(Name), 
+         Name = fct_reorder(Name, `AMF Status (FungalRoot database)`, .desc = TRUE),
+         Name = fct_reorder(Name, Family, .desc = TRUE)) %>% #reorder names by taxonomic family so close relatives together
+  ggplot(aes(x= DataType, y= Name, fill = Type)) +              
+  geom_tile(color = "black") +    				 # tiles with a black border  
+  theme_classic() +
+  scale_x_discrete(guide = guide_axis(angle = 90)) +   	    # removed overlapping axis labels
+  scale_fill_manual(values = c("#005A41","#93D2C1", "grey90")) + 
+  facet_grid(Habitat ~ ., scales = "free", space = "free", switch = "y") + # splits out habitats
+  xlab("") +
+  ylab("")  + 
+  theme(axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    strip.background = element_blank(),
+    strip.text.y = element_blank(),
+    axis.line.y = element_blank(),
+    axis.line.x = element_blank()) +
+  guides(fill=guide_legend(title="Data Type"))
+
+# Plot data type
+c <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  mutate(Habitat = factor(Habitat, levels=c("Marine", "Freshwater", "Terrestrial"))) %>% # reorder Habitat 
+  mutate(Name = factor(Name), 
+         Name = fct_reorder(Name, `AMF Status (FungalRoot database)`, .desc = TRUE),
+         Name = fct_reorder(Name, Family, .desc = TRUE)) %>% #reorder names by taxonomic family so close relatives together
+  mutate(`AMF Status (FungalRoot database)` = factor(`AMF Status (FungalRoot database)`, levels=c('AM', 'NM-AM', 'NM'), labels = c('AM' ,'AM-NM', 'NM'))) %>%
+  mutate(AMF = "AMF Status") %>%
+  ggplot(aes(x= AMF, y= Name, fill = `AMF Status (FungalRoot database)`)) +              
+  geom_tile(color = "black") +    				 # tiles with a black border  
+  theme_classic() +
+  scale_x_discrete(guide = guide_axis(angle = 90)) +   	    # removed overlapping axis labels
+  scale_fill_manual(values = c( "#D55E00","#FFCA9F", "grey40" )) + 
+  facet_grid(Habitat ~ ., scales = "free", space = "free", switch = "y") + # splits out habitats
+  xlab("") +
+  ylab("")  + 
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        strip.background = element_blank(),
+        strip.text.y = element_blank(),
+        axis.line.y = element_blank(),
+        axis.line.x = element_blank()
+  ) +
+  guides(fill=guide_legend(title="AMF Status"))
+
+
+
+# Combine
+a + b + c + plot_layout(guides='collect', widths = c(38, 1,1))
+
+ggsave(filename = '../plots/figure1.pdf', plot = last_plot(), device = 'pdf', width = 14, height = 9, dpi = 300)
+ggsave(filename = '../plots/figure1.png', plot = last_plot(), device = 'png', width = 14, height = 9, dpi = 300)
+
+ 
+
+```
+
+
+## Figure S1
+```{r s1, message=FALSE, error=FALSE, fig.height=9, fig.width=10}
+
+a2 <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  filter(Gene %in% c('RAD1', 'STR1', 'STR2', 'SymRK (DMI2)', 'CCaMK (DMI3)', 'CYCLOPS (IDP3)')) %>%
+  mutate(Habitat = factor(Habitat, levels=c("Marine", "Freshwater", "Terrestrial"))) %>% # reorder Habitat 
+  mutate(Name = factor(Name), 
+         #Name = fct_reorder(Name, `AMF Status (FungalRoot database)`, .desc = TRUE),
+         Name = fct_reorder(Name, Family, .desc = TRUE)) %>% #reorder names by taxonomic family so close relatives together
+  mutate(`Reciprocal Match` = ifelse(is.na(`Reciprocal Match`), "ND", as.character(`Reciprocal Match`))) %>% #replace NA's with a value ND 
+  mutate(`Reciprocal Match` = factor(`Reciprocal Match`, 
+                                     levels=c("TRUE", "FALSE", "ND"), 
+                                     labels=c("TRUE" = "Positive", "FALSE" = "Negative", 'ND' = "Not detected"))) %>% #change order and relabel for plot
+  ggplot(aes(x= Gene, y= Name, fill = `Reciprocal Match`)) +              
+  geom_tile(aes(x=fct_inorder(Gene), y=Name)) +       # reorders the gene order
+  geom_tile(stat = "identity") +
+  geom_tile(color = "black") +    				 # tiles with a black border  
+  scale_x_discrete(guide = guide_axis(angle = 90)) +   	    # removed overlapping axis labels
+  scale_fill_manual(values = c("#00466B","#56B4E9", "white")) + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  facet_grid(Habitat ~ ., scales = "free", space = "free", switch = "y") + # splits out habitats
+  xlab("") +
+  ylab("")  + 
+  theme(axis.line.x = element_blank(),
+        axis.text.y = element_markdown(),
+        axis.line.y = element_blank(),)
+
+
+b2 <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  filter(Gene %in% c('RAD1', 'STR1', 'STR2', 'SymRK (DMI2)', 'CCaMK (DMI3)', 'CYCLOPS (IDP3)')) %>%
+  mutate(Habitat = factor(Habitat, levels=c("Marine", "Freshwater", "Terrestrial"))) %>% # reorder Habitat 
+  mutate(DataType = "Data Type") %>%
+  mutate(Name = factor(Name), 
+         #Name = fct_reorder(Name, `AMF Status (FungalRoot database)`, .desc = TRUE),
+         Name = fct_reorder(Name, Family, .desc = TRUE)) %>% #reorder names by taxonomic family so close relatives together
+  ggplot(aes(x= DataType, y= Name, fill = Type)) +              
+  geom_tile(color = "black") +    				 # tiles with a black border  
+  theme_classic() +
+  scale_x_discrete(guide = guide_axis(angle = 90)) +   	    # removed overlapping axis labels
+  scale_fill_manual(values = c("#005A41","#93D2C1", "grey90")) + 
+  facet_grid(Habitat ~ ., scales = "free", space = "free", switch = "y") + # splits out habitats
+  xlab("") +
+  ylab("")  + 
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        strip.background = element_blank(),
+        strip.text.y = element_blank(),
+        axis.line.y = element_blank(),
+        axis.line.x = element_blank()
+  ) +
+  guides(fill=guide_legend(title="Data Type"))
+
+
+c2 <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  filter(Gene %in% c('RAD1', 'STR1', 'STR2', 'SymRK (DMI2)', 'CCaMK (DMI3)', 'CYCLOPS (IDP3)')) %>%
+  mutate(Habitat = factor(Habitat, levels=c("Marine", "Freshwater", "Terrestrial"))) %>% # reorder Habitat 
+  mutate(AMF = "AMF Status") %>%
+  mutate(Name = factor(Name), 
+         #Name = fct_reorder(Name, `AMF Status (FungalRoot database)`, .desc = TRUE),
+         Name = fct_reorder(Name, Family, .desc = TRUE)) %>% #reorder names by taxonomic family so close relatives together
+  mutate(`AMF Status (FungalRoot database)` = factor(`AMF Status (FungalRoot database)`, levels=c('AM', 'NM-AM', 'NM'), labels = c('AM' ,'AM-NM', 'NM'))) %>%
+  ggplot(aes(x= AMF, y= Name, fill = `AMF Status (FungalRoot database)`)) +              
+  geom_tile(color = "black") +    				 # tiles with a black border  
+  theme_classic() +
+  scale_x_discrete(guide = guide_axis(angle = 90)) +   	    # removed overlapping axis labels
+  scale_fill_manual(values = c( "#D55E00","#FFCA9F", "grey40" )) + 
+  facet_grid(Habitat ~ ., scales = "free", space = "free", switch = "y") + # splits out habitats
+  xlab("") +
+  ylab("")  + 
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        strip.background = element_blank(),
+        strip.text.y = element_blank(),
+        axis.line.y = element_blank(),
+        axis.line.x = element_blank()
+  ) +
+  guides(fill=guide_legend(title="AMF Status"))
+
+
+
+a2 + b2 + c2 + plot_layout(guides='collect', widths = c(6, 1,1))
+
+ggsave(filename = '../plots/figureS1.pdf', plot = last_plot(), device = 'pdf', width = 10, height = 9, dpi = 300)
+ggsave(filename = '../plots/figureS1.png', plot = last_plot(), device = 'png', width = 10, height = 9, dpi = 300)
+
+ 
+
+```
+
+
+```{r extra, message=FALSE, error=FALSE, include=FALSE}
+
+
+
+proportions <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  mutate(`Reciprocal Match` = ifelse(is.na(`Reciprocal Match`), "ND", as.character(`Reciprocal Match`))) %>% 
+  group_by( `AMF Status (FungalRoot database)`, Gene, `Reciprocal Match`) %>% 
+  tally() %>% 
+  pivot_wider(names_from = `Reciprocal Match`, values_from=n) %>%
+  mutate_all(~replace(., is.na(.), 0)) %>%
+  #filter(Gene %in% c("RAD1", "STR1", "STR2", "SymRK (DMI2)","CCaMK (DMI3)","CYCLOPS (IDP3)")) %>% 
+  rowwise() %>% 
+  mutate(
+    total = ND + `TRUE` + `FALSE`,  # Calculate total occurrences per gene
+    prop_ND = ND / total,            # Proportion of ND
+    prop_TRUE = `TRUE` / total,      # Proportion of TRUE
+    prop_FALSE = `FALSE` / total     # Proportion of FALSE
+  ) %>%
+  ungroup()
+
+summary_stats <- proportions %>%
+  group_by( Type,`AMF Status (FungalRoot database)`) %>%
+  summarise(
+    mean_prop_ND = 100*mean(prop_ND, na.rm = TRUE),
+    se_prop_ND = 100*sd(prop_ND, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_TRUE = 100*mean(prop_TRUE, na.rm = TRUE),
+    se_prop_TRUE = 100*sd(prop_TRUE, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_FALSE = 100*mean(prop_FALSE, na.rm = TRUE),
+    se_prop_FALSE = 100*sd(prop_FALSE, na.rm = TRUE) / sqrt(n())
+  )
+
+
+
+proportions <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  mutate(`Reciprocal Match` = ifelse(is.na(`Reciprocal Match`), "ND", as.character(`Reciprocal Match`))) %>% 
+  group_by(Habitat, Gene, `Reciprocal Match`) %>% 
+  tally() %>% 
+  pivot_wider(names_from = `Reciprocal Match`, values_from=n) %>%
+  mutate_all(~replace(., is.na(.), 0)) %>%
+  #filter(Gene %in% c("RAD1", "STR1", "STR2", "SymRK (DMI2)","CCaMK (DMI3)","CYCLOPS (IDP3)")) %>% 
+  rowwise() %>% 
+  mutate(
+    total = ND + `TRUE` + `FALSE`,  # Calculate total occurrences per gene
+    prop_ND = ND / total,            # Proportion of ND
+    prop_TRUE = `TRUE` / total,      # Proportion of TRUE
+    prop_FALSE = `FALSE` / total     # Proportion of FALSE
+  ) %>%
+  ungroup()
+
+summary_stats <- proportions %>%
+  group_by(Habitat) %>%
+  summarise(
+    mean_prop_ND = 100*mean(prop_ND, na.rm = TRUE),
+    se_prop_ND = 100*sd(prop_ND, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_TRUE = 100*mean(prop_TRUE, na.rm = TRUE),
+    se_prop_TRUE = 100*sd(prop_TRUE, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_FALSE = 100*mean(prop_FALSE, na.rm = TRUE),
+    se_prop_FALSE = 100*sd(prop_FALSE, na.rm = TRUE) / sqrt(n())
+  )
+
+
+proportions <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  mutate(`Reciprocal Match` = ifelse(is.na(`Reciprocal Match`), "ND", as.character(`Reciprocal Match`))) %>% 
+  group_by(Habitat, `AMF Status (FungalRoot database)`, Gene, `Reciprocal Match`) %>% 
+  tally() %>% 
+  pivot_wider(names_from = `Reciprocal Match`, values_from=n) %>%
+  mutate_all(~replace(., is.na(.), 0)) %>%
+  filter(Gene %in% c("RAD1", "STR1", "STR2")) %>% 
+  rowwise() %>% 
+  mutate(
+    total = ND + `TRUE` + `FALSE`,  # Calculate total occurrences per gene
+    prop_ND = ND / total,            # Proportion of ND
+    prop_TRUE = `TRUE` / total,      # Proportion of TRUE
+    prop_FALSE = `FALSE` / total     # Proportion of FALSE
+  ) %>%
+  ungroup()
+
+summary_stats <- proportions %>%
+  group_by(Habitat, `AMF Status (FungalRoot database)`) %>%
+  summarise(
+    mean_prop_ND = 100*mean(prop_ND, na.rm = TRUE),
+    se_prop_ND = 100*sd(prop_ND, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_TRUE = 100*mean(prop_TRUE, na.rm = TRUE),
+    se_prop_TRUE = 100*sd(prop_TRUE, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_FALSE = 100*mean(prop_FALSE, na.rm = TRUE),
+    se_prop_FALSE = 100*sd(prop_FALSE, na.rm = TRUE) / sqrt(n())
+  )
+
+
+
+
+
+proportions <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  mutate(`Reciprocal Match` = ifelse(is.na(`Reciprocal Match`), "ND", as.character(`Reciprocal Match`))) %>% 
+  group_by(Habitat, `AMF Status (FungalRoot database)`, Gene, `Reciprocal Match`) %>% 
+  tally() %>% 
+  pivot_wider(names_from = `Reciprocal Match`, values_from=n) %>%
+  mutate_all(~replace(., is.na(.), 0)) %>%
+  filter(Gene %in% c("RAD1", "STR1", "STR2")) %>% 
+  rowwise() %>% 
+  mutate(
+    total = ND + `TRUE` + `FALSE`,  # Calculate total occurrences per gene
+    prop_ND = ND / total,            # Proportion of ND
+    prop_TRUE = `TRUE` / total,      # Proportion of TRUE
+    prop_FALSE = `FALSE` / total     # Proportion of FALSE
+  ) %>%
+  ungroup()
+
+summary_stats <- proportions %>%
+  group_by(Habitat, `AMF Status (FungalRoot database)`) %>%
+  summarise(
+    mean_prop_ND = 100*mean(prop_ND, na.rm = TRUE),
+    se_prop_ND = 100*sd(prop_ND, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_TRUE = 100*mean(prop_TRUE, na.rm = TRUE),
+    se_prop_TRUE = 100*sd(prop_TRUE, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_FALSE = 100*mean(prop_FALSE, na.rm = TRUE),
+    se_prop_FALSE = 100*sd(prop_FALSE, na.rm = TRUE) / sqrt(n())
+  )
+
+
+proportions <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  mutate(`Reciprocal Match` = ifelse(is.na(`Reciprocal Match`), "ND", as.character(`Reciprocal Match`))) %>% 
+  group_by(Habitat, `AMF Status (FungalRoot database)`, Gene, `Reciprocal Match`) %>% 
+  tally() %>% 
+  pivot_wider(names_from = `Reciprocal Match`, values_from=n) %>%
+  mutate_all(~replace(., is.na(.), 0)) %>%
+  filter(Gene %in% c("SymRK (DMI2)","CCaMK (DMI3)","CYCLOPS (IDP3)")) %>% 
+  rowwise() %>% 
+  mutate(
+    total = ND + `TRUE` + `FALSE`,  # Calculate total occurrences per gene
+    prop_ND = ND / total,            # Proportion of ND
+    prop_TRUE = `TRUE` / total,      # Proportion of TRUE
+    prop_FALSE = `FALSE` / total     # Proportion of FALSE
+  ) %>%
+  ungroup()
+
+summary_stats <- proportions %>%
+  group_by(Habitat, `AMF Status (FungalRoot database)`) %>%
+  summarise(
+    mean_prop_ND = 100*mean(prop_ND, na.rm = TRUE),
+    se_prop_ND = 100*sd(prop_ND, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_TRUE = 100*mean(prop_TRUE, na.rm = TRUE),
+    se_prop_TRUE = 100*sd(prop_TRUE, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_FALSE = 100*mean(prop_FALSE, na.rm = TRUE),
+    se_prop_FALSE = 100*sd(prop_FALSE, na.rm = TRUE) / sqrt(n())
+  )
+
+
+proportions <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  mutate(`Reciprocal Match` = ifelse(is.na(`Reciprocal Match`), "ND", as.character(`Reciprocal Match`))) %>% 
+  group_by( `AMF Status (FungalRoot database)`, Gene, `Reciprocal Match`) %>% 
+  tally() %>% 
+  pivot_wider(names_from = `Reciprocal Match`, values_from=n) %>%
+  mutate_all(~replace(., is.na(.), 0)) %>%
+  filter(Gene %in% c("SymRK (DMI2)","CCaMK (DMI3)","CYCLOPS (IDP3)")) %>% 
+  rowwise() %>% 
+  mutate(
+    total = ND + `TRUE` + `FALSE`,  # Calculate total occurrences per gene
+    prop_ND = ND / total,            # Proportion of ND
+    prop_TRUE = `TRUE` / total,      # Proportion of TRUE
+    prop_FALSE = `FALSE` / total     # Proportion of FALSE
+  ) %>%
+  ungroup()
+
+summary_stats <- proportions %>%
+  group_by( `AMF Status (FungalRoot database)`) %>%
+  summarise(
+    mean_prop_ND = 100*mean(prop_ND, na.rm = TRUE),
+    se_prop_ND = 100*sd(prop_ND, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_TRUE = 100*mean(prop_TRUE, na.rm = TRUE),
+    se_prop_TRUE = 100*sd(prop_TRUE, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_FALSE = 100*mean(prop_FALSE, na.rm = TRUE),
+    se_prop_FALSE = 100*sd(prop_FALSE, na.rm = TRUE) / sqrt(n())
+  )
+
+
+proportions <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  mutate(`Reciprocal Match` = ifelse(is.na(`Reciprocal Match`), "ND", as.character(`Reciprocal Match`))) %>% 
+  group_by(Habitat, Gene, `Reciprocal Match`) %>% 
+  tally() %>% 
+  pivot_wider(names_from = `Reciprocal Match`, values_from=n) %>%
+  mutate_all(~replace(., is.na(.), 0)) %>%
+  filter(Gene %in% c("SymRK (DMI2)","CCaMK (DMI3)","CYCLOPS (IDP3)")) %>% 
+  rowwise() %>% 
+  mutate(
+    total = ND + `TRUE` + `FALSE`,  # Calculate total occurrences per gene
+    prop_ND = ND / total,            # Proportion of ND
+    prop_TRUE = `TRUE` / total,      # Proportion of TRUE
+    prop_FALSE = `FALSE` / total     # Proportion of FALSE
+  ) %>%
+  ungroup()
+
+summary_stats <- proportions %>%
+  group_by(Habitat) %>%
+  summarise(
+    mean_prop_ND = 100*mean(prop_ND, na.rm = TRUE),
+    se_prop_ND = 100*sd(prop_ND, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_TRUE = 100*mean(prop_TRUE, na.rm = TRUE),
+    se_prop_TRUE = 100*(sd(prop_TRUE, na.rm = TRUE) / sqrt(n())),
+
+    mean_prop_FALSE = 100*mean(prop_FALSE, na.rm = TRUE),
+    se_prop_FALSE = 100*sd(prop_FALSE, na.rm = TRUE) / sqrt(n())
+  )
+
+
+
+proportions <- pivot_longer(blast_res,cols = 8:52,names_to = 'Gene', values_to = 'Reciprocal Match') %>%
+  mutate(`Reciprocal Match` = ifelse(is.na(`Reciprocal Match`), "ND", as.character(`Reciprocal Match`))) %>% 
+  group_by(Habitat, Gene, `Reciprocal Match`) %>% 
+  tally() %>% 
+  pivot_wider(names_from = `Reciprocal Match`, values_from=n) %>%
+  mutate_all(~replace(., is.na(.), 0)) %>%
+  filter(Gene %in% c("KinF", "EPP1", "VAPYRIN", "LIN","CASTOR", "SYN")) %>% 
+  rowwise() %>% 
+  mutate(
+    total = ND + `TRUE` + `FALSE`,  # Calculate total occurrences per gene
+    prop_ND = ND / total,            # Proportion of ND
+    prop_TRUE = `TRUE` / total,      # Proportion of TRUE
+    prop_FALSE = `FALSE` / total     # Proportion of FALSE
+  ) %>%
+  ungroup()
+
+summary_stats <- proportions %>%
+  group_by(Habitat) %>%
+  summarise(
+    mean_prop_ND = 100*mean(prop_ND, na.rm = TRUE),
+    se_prop_ND = 100*sd(prop_ND, na.rm = TRUE) / sqrt(n()),
+
+    mean_prop_TRUE = 100*mean(prop_TRUE, na.rm = TRUE),
+    se_prop_TRUE = 100*(sd(prop_TRUE, na.rm = TRUE) / sqrt(n())),
+
+    mean_prop_FALSE = 100*mean(prop_FALSE, na.rm = TRUE),
+    se_prop_FALSE = 100*sd(prop_FALSE, na.rm = TRUE) / sqrt(n())
+  )
+
+```
+
