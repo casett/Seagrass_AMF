@@ -6,7 +6,7 @@
 
 ### To cite this work or code
 
-<i> Preprint coming soon </i>
+Ettinger, C.L., Arroyo, J., Stajich, J.E. (2025). Assessing the Evolutionary Trajectory of Arbuscular Mycorrhizal Conserved Genes in Seagrasses and Aquatic Close Relatives. Preprint available on <i>bioRxiv</i>. DOI: [10.1101/2025.01.23.634575](https://www.biorxiv.org/content/10.1101/2025.01.23.634575v1) 
 
 Ettinger, C., Arroyo, J., & Stajich, J. (2024). casett/Seagrass_AMF: v1 (Version v1). Zenodo. https://doi.org/10.5281/zenodo.14218123
 
